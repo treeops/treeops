@@ -473,8 +473,10 @@ Licensed under the [Apache Licence v2](https://www.apache.org/licenses/LICENSE-2
 
 
 ## Related <a name="RelatedLinks"></a>
-* https://en.wikipedia.org/wiki/XSLT
-* https://en.wikipedia.org/wiki/XML_Schema_(W3C)
-* https://en.wikipedia.org/wiki/JSON#JSON_Schema
-* JSON to JSON transform https://github.com/bazaarvoice/jolt
+* [XML Transformations](https://en.wikipedia.org/wiki/XSLT)
+* [XML Schema](https://en.wikipedia.org/wiki/XML_Schema_(W3C))
+* [JSON Schema](https://en.wikipedia.org/wiki/JSON#JSON_Schema)
+* [JSON to JSON transform https://github.com/bazaarvoice/jolt](https://github.com/bazaarvoice/jolt)
+* [Stackoverflow discussion https://stackoverflow.com/questions/1618038/xslt-equivalent-for-json](https://stackoverflow.com/questions/1618038/xslt-equivalent-for-json)
+
 
