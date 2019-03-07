@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+	<book category="cooki>&amp;amp;ng">
+		<title lang="en"> Everyday &amp;&amp;>Italian </title>
+		<author>Rocco Puccini</author>
+		<year>2005</year>
+		<price>30.00</price>
+	</book>
+	
+	<book category="child&quot;ren">
+		<title lang="en">Harry Potter</title>
+		<author>JK Rowling</author>
+		<year>2005</year>
+		<price>29.99</price>
+	</book>
+
+	<book category="web">
+		<title lang="en"> LEarn XML </title>
+		<author>Eirk T.Ray</author>
+		<year>2003</year>
+		<price>39.90</price>
+	</book>
+
+</bookstore>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+    <customer>
+        <orders>
+            <order>
+                <orderDate>Today</orderDate>
+            </order>
+            <otherOrdersData>other Data applicable to all orders</otherOrdersData>
+            <order>
+                <_text_>order1Cust1</_text_>
+            </order>
+            <otherOrderData2>otherOrderData2</otherOrderData2>
+        </orders>
+        <address>cust1 address</address>
+        <name>cust1</name>
+    </customer>
+    <customer>
+        <orders>
+            <order>
+                <_text_>order2Cust2</_text_>
+            </order>
+            <order>
+                <_text_>order3Cust2</_text_>
+            </order>
+        </orders>
+        <address>cust2 address</address>
+        <name>cust2</name>
+    </customer>
+</root>

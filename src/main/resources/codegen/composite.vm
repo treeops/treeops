@@ -1,0 +1,32 @@
+package $packageName;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class $codegen.capitalizeFirst($type.getName()) 
+#if($type.getSuperType()) 
+	extends $type.getSuperType()  
+#end 
+{
+	#foreach($var in $type.getVariables())
+	  	#set ($varName= $codegen.javaName($var.getName())) 		  
+		#set ($varType = $codegen.typeMapping($var.getType()))				  
+	  	#if($var.isCollection())
+	  		#set ($varType = "List<$codegen.typeMapping($var.getType())>")
+	  		private $varType $varName=new ArrayList<>();
+	  	#else
+	  		private $varType $varName;
+	  	#end
+	  	 		          
+ 
+	  	public $varType  get$codegen.capitalizeFirst($varName) (){
+	  		return $varName;
+	  	} 		          
+    
+	  	public void  set$codegen.capitalizeFirst($varName) ($varType  $varName ){
+	  		this. $varName =  $varName;
+	  	} 		          
+    #end
+
+
+}

@@ -1,0 +1,36 @@
+
+import static org.junit.Assert.assertEquals;
+import java.io.File;
+import org.junit.Test;
+import org.treeops.xml.XmlReader;
+
+public class CheckTest {
+
+	@Test
+	public void testRead() throws Exception {
+		Friends friends = Reader.readFriends(XmlReader.read(new File(System.getProperty("friends.xml.file"))));
+		assertEquals(friends.getFriend().size(), 3);
+		
+		check(0, friends, "Emma", SportEnum.TENNIS, true, "Bear", "leather", 8);
+		check(1, friends, "Bob", SportEnum.FOOTBALL, true, "Bella", "chain", 9);
+		check(2, friends, "Nick", SportEnum.BADMINTON, false, "Fluffy", "fish", 10);
+		System.err.println("completed!!");
+	}
+
+	private void check(int index, Friends friends, String name, SportEnum sport, boolean dogOrCat, String petName, String petData, Integer age) {
+		Friend friend = friends.getFriend().get(index);
+		assertEquals(friend.getName(), name);
+		assertEquals(friend.getAge(), age);
+		assertEquals(friend.getSport(), sport);
+
+		assertEquals(friend.getPet().getPet().getName(), petName);
+		if (dogOrCat) {
+			Dog dog = (Dog) friend.getPet().getPet();
+			assertEquals(dog.getCollarType(), petData);
+		} else {
+			Cat cat = (Cat) friend.getPet().getPet();
+			assertEquals(cat.getFavouriteCatFood(), petData);
+		}
+	}
+
+}

@@ -1,0 +1,34 @@
+{
+  "bookstore": {
+    "book": [
+      {
+        "category": "cooking",
+        "title": {
+          "lang": "en",
+          "text": " Everyday Italian "
+        },
+        "author": "Rocco Puccini",
+        "year": 2005,
+        "price": 30.00
+      },
+      {
+        "category": "children",
+        "title": {
+          "lang": "en",
+          "text": "Harry Potter"
+        },
+        "author": "JK Rowling",
+        "year": 2005,
+        "price": 29.99,
+        "optional": "text"
+      },
+      {
+        "category": "web",
+        "title": " Learn XML ",
+        "author": "Eirk T.Ray",
+        "year": 2003,
+        "price": 39.90
+      }
+    ]
+  }
+}

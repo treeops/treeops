@@ -1,0 +1,92 @@
+package $packageName;
+
+import java.io.File;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.treeops.csv.CsvReader;
+import org.treeops.DataNode;
+import org.treeops.transform.Transformation;
+import org.treeops.utils.Utils;
+import org.treeops.utils.XStreamUtils;
+import org.treeops.xml.XmlReader;
+import org.treeops.json.JsonReader;
+
+public class Reader {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Reader.class);
+
+	public static void main(String[] args) throws Exception {
+		DataNode root = readXml(new File(args[0]));//"src/test/resources/books.xml"));
+		LOG.info(DataNode.printElement(root));
+
+		#set ($firstType = $codegen.compositeTypes($types).get(0))
+		$codegen.capitalizeFirst($firstType.getName()) res = read$codegen.capitalizeFirst($firstType.getName())(root);
+		//res.getBook().forEach(b -> LOG.info("book " + b + " " + b.getCategory()));
+	}
+
+
+	public static DataNode readJson(File file) throws Exception {
+		return Transformation.runAll(readTransformations(), JsonReader.read(file));
+	}
+
+	public static DataNode readXml(File file) throws Exception {
+		return Transformation.runAll(readTransformations(), XmlReader.read(file));
+	}
+	
+	public static DataNode readCsv(File file) throws Exception {
+		return Transformation.runAll(readTransformations(), CsvReader.read(file));
+	}
+	
+	public static List<Transformation> readTransformations() throws Exception {
+		return XStreamUtils.read(Utils.readClasspathFile("/$codegen.packageToPath($packageName)/transformations.xml", Reader.class));
+	}
+
+		
+#foreach($type in $codegen.compositeTypes($types))
+	#set ($typeName = $codegen.capitalizeFirst($type.getName()))
+	public static $typeName read$typeName (DataNode n) {
+		$typeName o = new ${typeName}();
+		
+		for (DataNode c : DataNode.children(n)) {
+			
+			#foreach($var in $codegen.allVariables($type, $types, $transformations))
+			  	#set ($varName= $codegen.javaName($var.getName()))
+				#set ($varType = $codegen.typeMapping($var.getType()))				  
+			  	
+				if ("$var.getOldName()".equals(c.getName())) {
+					
+			  	 	#if($var.isCollection())
+				  		o.get${codegen.capitalizeFirst($varName)}().add(read${varType}(c));
+				  	#else
+						#if($var.getType()=="text")
+							if (c.hasSingleChild()) {
+								o.set$codegen.capitalizeFirst($varName)(c.getSingleChild().getName());
+							}
+						#elseif($var.getType()=="integer")
+							if (c.hasSingleChild()) {
+								o.set$codegen.capitalizeFirst($varName)(Integer.valueOf(c.getSingleChild().getName()));
+							}
+						#elseif($var.getType()=="double")
+							if (c.hasSingleChild()) {
+								o.set$codegen.capitalizeFirst($varName)(Double.valueOf(c.getSingleChild().getName()));
+							}
+						#elseif($codegen.isEnum($var.getType(), $types))
+							if (c.hasSingleChild()) {
+								o.set${codegen.capitalizeFirst($varName)}(${codegen.capitalizeFirst($var.getType())}.find(c.getSingleChild().getName()));
+							}									  	
+						#else
+							o.set${codegen.capitalizeFirst($varName)}(read${codegen.typeMapping($var.getOldType())}(c));
+						#end
+				  	#end
+				}
+		    #end
+		}
+
+		return o;
+	}
+
+#end
+}

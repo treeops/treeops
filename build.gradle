@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-csv:1.6'
+    compile 'javax.json:javax.json-api:1.1.4'
+    compile 'org.glassfish:javax.json:1.1.4'
+    compile 'com.thoughtworks.xstream:xstream:1.4.11.1'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'org.apache.velocity:velocity-engine-core:2.0'
+    
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    integTest {
+        java.srcDir file('src/integration-test/java')
+        //resources.srcDir file('src/integration-test/resources')
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+}
+
+/*task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integTest.output.classesDirs
+   classpath = sourceSets.integTest.runtimeClasspath
+   outputs.upToDateWhen { false }
+}*/
+
+mainClassName = "org.treeops.ui.TreeOpsFrame"

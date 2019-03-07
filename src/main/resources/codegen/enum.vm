@@ -1,0 +1,31 @@
+package $packageName;
+
+public enum $codegen.capitalizeFirst($type.getName()) {
+	
+	#set ($first="true")
+		
+	#foreach($val in $type.getValues())
+		#if($first == "true") #set ($first="false") 	#else,#end
+		$codegen.javaName($val).toUpperCase() ("$val")		          
+    #end;
+
+	private final String desc;
+	$codegen.capitalizeFirst($type.getName()) (String desc){
+		this.desc=desc;
+	}
+		
+	public String getDescription(){
+		return desc;
+	}
+	
+	public static $codegen.capitalizeFirst($type.getName()) find(String s) {
+		for ($codegen.capitalizeFirst($type.getName())  v : values()) {
+			if (v.desc.equals(s)) {
+				return v;
+			}
+		}
+		return null;
+	}
+
+	
+}
