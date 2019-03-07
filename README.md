@@ -22,6 +22,7 @@ TreeOps can effortlessly generate Java classes that will read and represent tran
 1. [Example: Indexing and Regular expressions](#ExampleIndexing)
 1. [Example: Group and append child name](#ExampleGroup)
 1. [Example: Customizing generated code and inheritance](#ExampleInheritance)
+1. [Structural, value-holder and value nodes](#structural)
 1. [Tree schema information](#Schema)
 1. [Transformations](#Transformations)
 1. [Types tab](#Types)
@@ -399,7 +400,7 @@ public class Reader {
 
 
 
-## Structural, value-holder and value nodes <a name="?"></a>
+## Structural, value-holder and value nodes <a name="structural"></a>
 Nodes in the input tree are divided into value-holder nodes, value nodes and structural nodes. 
 Value-holder nodes can have up to one leaf child which holds its value.  
 Value nodes don't have children.
