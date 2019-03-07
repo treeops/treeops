@@ -1,4 +1,4 @@
-#TreeOps (Tree Operations)
+# TreeOps (Tree Operations)
 
 TreeOps is a visual tool for reading, writing and transforming tree data in different formats. The following formats are supported:
 * XML
