@@ -1,4 +1,4 @@
-# TreeOps (Tree Operations)
+# TreeOps (Tree Operations) 
 
 TreeOps is a visual tool for reading, writing and transforming tree data in different formats. The following formats are supported:
 * XML
@@ -14,6 +14,7 @@ TreeOps defines set of data tree transformations to faciliate typical data manip
 Transformations can be saved and re-applied again later. 
 
 TreeOps can effortlessly generate Java classes that will read and represent transformed data as simple POJOs(plain old java objects).
+The project is hosted on [github](https://github.com/treeops/treeops)
 
 ## Table of contents
 1. [Example: Use Case](#usecase)
