@@ -1,0 +1,10 @@
+language: java
+
+notifications:
+  email: false
+
+jdk:
+- oraclejdk8
+
+after_success:
+  - bash <(echo "completed")

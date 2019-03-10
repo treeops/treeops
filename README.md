@@ -5,11 +5,11 @@ TreeOps is a visual tool for reading, writing and transforming tree data in diff
 * JSON 
 * CSV
 
-TreeOps defines set of data tree transformations to faciliate typical data manipulations:
+TreeOps defines set of data tree transformations to facilitate typical data manipulations:
 * filtering and deleting irrelevant data
 * renaming and moving nodes along the tree
 * flattening and de-flattening to convert between tree and tabular formats
-* change nodes using reqular expressions under selected nodes
+* change nodes using regular expressions under selected nodes
 
 Transformations can be saved and re-applied again later. 
 
@@ -43,7 +43,7 @@ Initial data analysis can be done in TreeOps visual tool based on the samples pr
 * see the unique paths within input tree and node multiplicity
 * get rid of irrelevant data
 * move data nodes around to match your requirements
-* replace text in some nodes using reqular expressions
+* replace text in some nodes using regular expressions
 * flatten/export data to tabular format for further processing, e.g. using statistical methods(R)
 * save transformations so they can be applied again
 

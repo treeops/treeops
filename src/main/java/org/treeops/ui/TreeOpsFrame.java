@@ -35,8 +35,8 @@ import org.treeops.SchemaNode;
 import org.treeops.codegen.CodeGenerator;
 import org.treeops.formats.FileInput;
 import org.treeops.formats.Format;
-import org.treeops.formats.InputParser;
 import org.treeops.formats.Input;
+import org.treeops.formats.InputParser;
 import org.treeops.formats.TextInput;
 import org.treeops.transform.Transformation;
 import org.treeops.types.TypeExtractor;
@@ -69,7 +69,7 @@ public class TreeOpsFrame extends JFrame {
 	private InputPanel inputPanel = new InputPanel(input -> inputReceived(input));
 
 	public TreeOpsFrame() {
-		super("Schema editor");
+		super("TreeOps");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		schemaPanel.setTransformationAddedListener(t -> {
