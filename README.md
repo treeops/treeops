@@ -1,5 +1,7 @@
 # TreeOps (Tree Operations) 
 
+[![Build Status](https://travis-ci.org/treeops/treeops.svg?branch=master)](https://travis-ci.org/treeops/treeops)
+
 TreeOps is a visual tool for reading, writing and transforming tree data in different formats. The following formats are supported:
 * XML
 * JSON 
