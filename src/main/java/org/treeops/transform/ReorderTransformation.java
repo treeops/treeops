@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.treeops.DataNode;
-import org.treeops.SchemaNode;
 import org.treeops.SchemaExtractor;
+import org.treeops.SchemaNode;
 import org.treeops.utils.Utils;
 
 public class ReorderTransformation implements Transformation {
@@ -27,7 +27,7 @@ public class ReorderTransformation implements Transformation {
 		SchemaNode schema = SchemaExtractor.schema(root);
 
 		SchemaNode nodeSchema = schema.child(Utils.withoutFirst(path));
-		if (nodeSchema == null || nodeSchema.getParent() == null) {
+		if ((nodeSchema == null) || (nodeSchema.getParent() == null)) {
 			return root;
 		}
 		SchemaNode parentSchema = nodeSchema.getParent();
@@ -45,12 +45,12 @@ public class ReorderTransformation implements Transformation {
 				continue;
 			}
 			processedParents.add(p);
-			reorder(f, parentSchema, nodeSchema);
+			reorder(f, parentSchema);
 		}
 		return root;
 	}
 
-	private void reorder(DataNode n, SchemaNode parentSchema, SchemaNode nodeSchema) {
+	private void reorder(DataNode n, SchemaNode parentSchema) {
 		DataNode parent = n.getParent();
 
 		List<DataNode> nodes = reorderChildren(parent, parentSchema);
@@ -68,7 +68,7 @@ public class ReorderTransformation implements Transformation {
 			}
 
 		} else {
-			if (index < parentSchema.getChildren().size() - 1) {
+			if (index < (parentSchema.getChildren().size() - 1)) {
 				newIndex = index + 1;
 			}
 		}
@@ -77,9 +77,7 @@ public class ReorderTransformation implements Transformation {
 
 	private List<DataNode> reorderChildren(DataNode parent, SchemaNode parentSchema) {
 		List<DataNode> ordered = new ArrayList<>();
-		parentSchema.getChildren().forEach(s -> {
-			ordered.addAll(parent.getChilds(s.getName()));
-		});
+		parentSchema.getChildren().forEach(s -> ordered.addAll(parent.getChilds(s.getName())));
 		return ordered;
 	}
 

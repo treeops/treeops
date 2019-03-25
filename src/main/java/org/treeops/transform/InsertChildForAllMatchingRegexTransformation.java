@@ -28,7 +28,7 @@ public class InsertChildForAllMatchingRegexTransformation implements Transformat
 
 				if (m.getData().isValueHolder()) {
 					m.getData().setValueHolder(false);
-					if (m.getChildren().size() > 0) {
+					if (m.hasChildren()) {
 						DataNode valueNode = DataNode.valueNode(null, "value", null);
 						for (DataNode c : DataNode.children(m)) {
 							c.addToParent(valueNode);

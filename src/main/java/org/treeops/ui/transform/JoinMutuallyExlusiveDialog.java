@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.xml.ws.Holder;
 
+import org.treeops.GenericNode;
 import org.treeops.SchemaNode;
 import org.treeops.transform.Transformation;
 import org.treeops.types.customization.JoinMutuallyExclusiveCustomization;
@@ -103,7 +104,7 @@ public abstract class JoinMutuallyExlusiveDialog extends JDialog {
 
 	public static Transformation showDialog(SchemaNode n, JFrame frame) {
 
-		List<String> list = n.getChildren().stream().map(c -> c.getName()).collect(Collectors.toList());
+		List<String> list = n.getChildren().stream().map(GenericNode::getName).collect(Collectors.toList());
 
 		Holder<JoinMutuallyExclusiveCustomization> holder = new Holder<>();
 		JoinMutuallyExlusiveDialog d = new JoinMutuallyExlusiveDialog(frame, list) {
@@ -124,6 +125,7 @@ public abstract class JoinMutuallyExlusiveDialog extends JDialog {
 
 			@Override
 			public void selected(List<String> selectedChildren, String name) {
+				//ignore
 			}
 
 		};

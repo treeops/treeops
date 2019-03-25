@@ -24,4 +24,9 @@ public class ParseData {
 		return new ParseData(isValueHolder());
 	}
 
+	@Override
+	public String toString() {
+		return valueHolder ? "valueHolder" : "notV";
+	}
+
 }

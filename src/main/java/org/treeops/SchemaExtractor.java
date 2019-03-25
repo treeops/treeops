@@ -10,7 +10,7 @@ public class SchemaExtractor {
 	private static final int NUM_VALUES = 30;
 
 	public static SchemaNode schema(DataNode n) {
-		SchemaNode s = newSchemaNode(n, null);
+		SchemaNode s = newSchemaNode(n.getName(), null);
 		Map<String, SchemaNode> path2SchemaNode = new HashMap<>();
 		path2SchemaNode.put(n.getName(), s);
 		addChildren(n, path2SchemaNode);
@@ -45,10 +45,9 @@ public class SchemaExtractor {
 		}
 	}
 
-	private static SchemaNode newSchemaNode(DataNode n, SchemaNode p) {
+	private static SchemaNode newSchemaNode(String name, SchemaNode p) {
 		SchemaData sd = new SchemaData();
-		SchemaNode s = new SchemaNode(p, n.getName(), sd);
-		sd.setMandatory(true);
+		SchemaNode s = new SchemaNode(p, name, sd);
 		sd.setTotal(1);
 		return s;
 	}
@@ -60,7 +59,7 @@ public class SchemaExtractor {
 			String path = c.getPathToRoot();
 			SchemaNode s = path2SchemaNode.get(path);
 			if (s == null) {
-				s = newSchemaNode(c, parent);
+				s = newSchemaNode(c.getName(), parent);
 				path2SchemaNode.put(path, s);
 			} else {
 				s.getData().setTotal(s.getData().getTotal() + 1);
@@ -68,7 +67,7 @@ public class SchemaExtractor {
 
 			if (c.getData().isValueHolder()) {
 				s.getData().setValueHolder(true);
-				if (c.getChildren().size() > 0) {
+				if (!c.getChildren().isEmpty()) {
 					addValue(s, c.getSingleChild().getName());
 				}
 			} else {
@@ -81,6 +80,36 @@ public class SchemaExtractor {
 		if (s.getData().getValues().size() < NUM_VALUES) {
 			s.getData().getValues().add(value);
 		}
+	}
+
+	public static SchemaNode mergeSchemas(DataNode r1, DataNode r2) {
+		SchemaNode s1 = schema(r1);
+		SchemaNode s2 = schema(r2);
+		return mergeCommon(s1, s2);
+	}
+
+	private static SchemaNode mergeCommon(SchemaNode s1, SchemaNode s2) {
+		s1.getData().merge(s2.getData());
+
+		for (SchemaNode c : SchemaNode.children(s1)) {
+			SchemaNode other = s2.getChild(c.getName());
+			if (other != null) {
+				mergeCommon(c, other);
+			} else {
+
+				c.getData().setMandatory(false);
+			}
+		}
+
+		for (SchemaNode c : SchemaNode.children(s2)) {
+			SchemaNode other = s1.getChild(c.getName());
+			if (other == null) {
+				s1.getChildren().add(c);
+				c.setParent(s1);
+				c.getData().setMandatory(false);
+			}
+		}
+		return s1;
 	}
 
 }

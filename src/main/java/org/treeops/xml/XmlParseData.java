@@ -3,6 +3,7 @@ package org.treeops.xml;
 import org.treeops.ParseData;
 
 public class XmlParseData extends ParseData {
+
 	private XmlNodeType nodeType = XmlNodeType.DEFAULT;
 
 	//used during parsing to store the collected text content spread around

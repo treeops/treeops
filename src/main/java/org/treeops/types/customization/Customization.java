@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.treeops.DataNode;
 import org.treeops.SchemaNode;
+import org.treeops.transform.IdentityTransformation;
 import org.treeops.transform.Transformation;
 import org.treeops.types.Type;
 
-public abstract class Customization implements Transformation {
-
-	@Override
-	public DataNode transform(DataNode root) {
-		return root;
-	}
+public abstract class Customization extends IdentityTransformation {
 
 	public static List<Customization> list(List<Transformation> transformations) {
 		return transformations.stream().filter(t -> t instanceof Customization).map(t -> (Customization) t).collect(Collectors.toList());

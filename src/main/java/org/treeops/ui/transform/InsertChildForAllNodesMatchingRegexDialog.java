@@ -86,7 +86,7 @@ public abstract class InsertChildForAllNodesMatchingRegexDialog extends JDialog 
 
 			@Override
 			public void selected(String regex, String replacement) {
-
+				//ignore event
 			}
 		};
 		dialog.setVisible(true);

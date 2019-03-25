@@ -16,8 +16,8 @@ import org.apache.commons.csv.CSVPrinter;
 import org.treeops.DataNode;
 import org.treeops.GenericNode;
 import org.treeops.SchemaData;
-import org.treeops.SchemaNode;
 import org.treeops.SchemaExtractor;
+import org.treeops.SchemaNode;
 import org.treeops.utils.Utils;
 
 public class CsvWriter {
@@ -32,8 +32,7 @@ public class CsvWriter {
 
 	public static Table table(DataNode root) {
 		SchemaNode schema = SchemaExtractor.schema(root);
-		List<String> columns = schema.flatten(false).stream().map(n -> n.getPathToRoot()).collect(Collectors.toList());
-		//removeMandatoryChilds(schema, columns);
+		List<String> columns = schema.flatten(false).stream().map(GenericNode::getPathToRoot).collect(Collectors.toList());
 		Table table = new Table(columns, new ArrayList<>());
 		for (DataNode r : DataNode.children(root)) {
 			addRow(r, table, schema, columns);
@@ -50,7 +49,7 @@ public class CsvWriter {
 	}
 
 	private static boolean hasMandatoryChild(GenericNode<SchemaData> n) {
-		return n.getChildren().stream().filter(c -> c.getData().isMandatory()).findFirst().isPresent();
+		return n.getChildren().stream().anyMatch(c -> c.getData().isMandatory());
 	}
 
 	private static Table cleanup(Table table) {
@@ -77,7 +76,6 @@ public class CsvWriter {
 
 	private static void populateValues(DataNode node, SchemaNode rootSchema, Map<String, String> path2val) {
 		String path = node.getPathToRoot();
-		//TODO: use schema to determine if node is valueHolder
 		if (node.getData().isValueHolder()) {
 			if (node.getChildren().isEmpty()) {
 				path2val.put(path, "");

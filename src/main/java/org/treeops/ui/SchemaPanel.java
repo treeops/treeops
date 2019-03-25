@@ -3,8 +3,6 @@ package org.treeops.ui;
 import static org.treeops.ui.util.GuiUtils.menuItem;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -52,14 +50,7 @@ public class SchemaPanel extends JPanel {
 		GuiUtils.align(table, SwingConstants.RIGHT, 3);
 		GuiUtils.align(table, SwingConstants.CENTER, 4);
 
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent event) {
-				int currentRow = table.rowAtPoint(event.getPoint());
-				table.setRowSelectionInterval(currentRow, currentRow);
-			}
-
-		});
+		GuiUtils.selectRowOnClick(table);
 	}
 
 	public void setShowTypeListener(Consumer<List<String>> showTypeListener) {
@@ -117,7 +108,7 @@ public class SchemaPanel extends JPanel {
 	}
 
 	public void selectRootIfNothingSelected() {
-		if ((table.getSelectedRow() < 0) && (tableModel.getList().size() > 0)) {
+		if ((table.getSelectedRow() < 0) && (!tableModel.getList().isEmpty())) {
 			table.getSelectionModel().setSelectionInterval(0, 0);
 		}
 	}
@@ -150,7 +141,7 @@ public class SchemaPanel extends JPanel {
 
 	public void findSchemaNode() {
 		String text = JOptionPane.showInputDialog("Enter text to search", lastSearch);
-		if ((text != null) && (text != "")) {
+		if ((text != null) && (text.length() != 0)) {
 			lastSearch = text;
 			find(text);
 		}

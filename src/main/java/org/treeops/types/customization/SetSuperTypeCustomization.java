@@ -48,16 +48,14 @@ public class SetSuperTypeCustomization extends Customization {
 
 		CompositeType type = CompositeType.findCompositeTypeOnly(schemaNode.getPath(), types);
 		if (type == null) {
-			LOG.warn("unable to find composite type " + toString() + " " + type);
+			LOG.warn("unable to find composite type " + toString());
 			return;
 		}
 
 		type.setSuperType(superType);
-		Type.find(types, superType).map(t -> ((CompositeType) t)).orElseGet(() -> {
-			CompositeType e = new CompositeType(superType);
-			types.add(e);
-			return e;
-		});
+		if (CompositeType.findComposite(types, superType) == null) {
+			types.add(new CompositeType(superType));
+		}
 
 	}
 

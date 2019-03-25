@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
-import org.treeops.SchemaNode;
 import org.treeops.SchemaExtractor;
+import org.treeops.SchemaNode;
 import org.treeops.transform.Transformation;
 import org.treeops.types.CompositeType;
 import org.treeops.types.EnumType;
@@ -29,7 +29,9 @@ public class CodeGenerator {
 
 	public static void generate(File outputDir, String packageName, DataNode root, List<Transformation> transformations) throws Exception {
 		root = Transformation.runAll(transformations, root);
-		LOG.info(DataNode.printElement(root));
+		if (LOG.isTraceEnabled()) {
+			LOG.trace(DataNode.printElement(root));
+		}
 
 		SchemaNode rootSchema = SchemaExtractor.schema(root);
 		LOG.info("*********schema:" + SchemaNode.printElement(rootSchema));
@@ -40,27 +42,21 @@ public class CodeGenerator {
 		for (Type t : types) {
 			TypeExtractor.printType(t);
 		}
-		generate(outputDir, packageName, rootSchema, types, transformations);
+		generate(outputDir, packageName, types, transformations);
 	}
 
-	public static void generate(File outputDir, String packageName, SchemaNode rootSchema, List<Type> types, List<Transformation> transformations) throws Exception {
+	public static void generate(File outputDir, String packageName, List<Type> types, List<Transformation> transformations) throws Exception {
 		writeTransfromations(outputDir, packageName, transformations);
 		generatePOJOs(outputDir, packageName, types);
-		generateParser(outputDir, packageName, rootSchema, types, transformations);
+		generateParser(outputDir, packageName, types, transformations);
 	}
 
 	private static void writeTransfromations(File outputDir, String packageName, List<Transformation> transformations) throws Exception {
-		XStreamUtils.toFile(transformations, new File(ensurePackageDirCreated(outputDir, packageName), "transformations.xml"));
+		XStreamUtils.toFile(transformations, new File(Utils.ensurePackageDirCreated(outputDir, packageName), "transformations.xml"));
 	}
 
-	private static File ensurePackageDirCreated(File outputDir, String packageName) {
-		File packageDir = packageDir(outputDir, packageName);
-		packageDir.mkdirs();
-		return packageDir;
-	}
-
-	private static void generateParser(File dir, String packageName, SchemaNode rootSchema, List<Type> types, List<Transformation> transformations) throws Exception {
-		File packageDir = ensurePackageDirCreated(dir, packageName);
+	private static void generateParser(File dir, String packageName, List<Type> types, List<Transformation> transformations) throws Exception {
+		File packageDir = Utils.ensurePackageDirCreated(dir, packageName);
 		Map<String, Object> objects = velocityContext(packageName);
 		objects.put("types", types);
 		objects.put("transformations", transformations);
@@ -79,13 +75,13 @@ public class CodeGenerator {
 			if (type instanceof EnumType) {
 				writeEnum((EnumType) type, dir, packageName);
 			} else if (type instanceof CompositeType) {
-				writeComposite((CompositeType) type, dir, packageName, types);
+				writeComposite((CompositeType) type, dir, packageName);
 			}
 		}
 	}
 
-	private static void writeComposite(CompositeType type, File dir, String packageName, List<Type> types) throws Exception {
-		File packageDir = ensurePackageDirCreated(dir, packageName);
+	private static void writeComposite(CompositeType type, File dir, String packageName) throws Exception {
+		File packageDir = Utils.ensurePackageDirCreated(dir, packageName);
 
 		Map<String, Object> objects = velocityContext(packageName);
 		objects.put("type", type);
@@ -93,7 +89,7 @@ public class CodeGenerator {
 	}
 
 	private static void writeEnum(EnumType type, File dir, String packageName) throws Exception {
-		File packageDir = ensurePackageDirCreated(dir, packageName);
+		File packageDir = Utils.ensurePackageDirCreated(dir, packageName);
 
 		Map<String, Object> objects = velocityContext(packageName);
 		objects.put("type", type);
@@ -114,10 +110,6 @@ public class CodeGenerator {
 			s = "a" + s;
 		}
 		return s;
-	}
-
-	private static File packageDir(File dir, String packageName) {
-		return new File(dir.getAbsolutePath() + "/" + packageName.replaceAll("\\.", "/"));
 	}
 
 	public static String typeMapping(String type) {
@@ -144,7 +136,7 @@ public class CodeGenerator {
 		List<JoinMutuallyExclusiveCustomization> joinTransfromations = transformations.stream().filter(t -> (t instanceof JoinMutuallyExclusiveCustomization))
 				.map(t -> (JoinMutuallyExclusiveCustomization) t).filter(jt -> CompositeType.pathFound(type.getPaths(), jt.getPath())).collect(Collectors.toList());
 
-		list.stream().forEach(v -> res.addAll(variableData(v, type, types, joinTransfromations)));
+		list.stream().forEach(v -> res.addAll(variableData(v, joinTransfromations)));
 		return res;
 	}
 
@@ -159,7 +151,7 @@ public class CodeGenerator {
 		return list;
 	}
 
-	private static List<TypeVariableData> variableData(TypeVariable v, CompositeType type, List<Type> types, List<JoinMutuallyExclusiveCustomization> joinTransfromations) {
+	private static List<TypeVariableData> variableData(TypeVariable v, List<JoinMutuallyExclusiveCustomization> joinTransfromations) {
 		List<TypeVariableData> res = new ArrayList<>();
 		for (JoinMutuallyExclusiveCustomization j : joinTransfromations) {
 			if (j.getNewName().equals(v.getName())) {

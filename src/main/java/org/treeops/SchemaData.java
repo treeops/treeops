@@ -10,6 +10,25 @@ public class SchemaData {
 	private Set<String> values = new TreeSet<>();
 	private boolean valueHolder;
 
+	public void merge(SchemaData other) {
+		maxOccurs = Math.max(maxOccurs, other.maxOccurs);
+		if (!other.mandatory) {
+			mandatory = false;
+		}
+		total += other.total;
+		values.addAll(other.values);
+		valueHolder = other.valueHolder;
+	}
+
+	@Override
+	public String toString() {
+		return "SchemaData [maxOccurs=" + maxOccurs + ", mandatory=" + mandatory + ", total=" + total + ", values=" + values + ", valueHolder=" + valueHolder + "]";
+	}
+
+	public boolean isList() {
+		return getMaxOccurs() > 1;
+	}
+
 	public int getMaxOccurs() {
 		return maxOccurs;
 	}

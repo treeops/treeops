@@ -40,8 +40,8 @@ public class JsonPrettyPrinter {
 	}
 
 	public static String format(String json) {
-		try {
-			return format(Json.createReader(new StringReader(json)).read());
+		try (javax.json.JsonReader reader = Json.createReader(new StringReader(json));) {
+			return format(reader.read());
 		} catch (Exception ex) {
 			return json;
 		}

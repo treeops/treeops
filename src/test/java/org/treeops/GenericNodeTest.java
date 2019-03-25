@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.treeops.DataNode;
 import org.treeops.utils.Utils;
 import org.treeops.xml.XmlReader;
 
@@ -70,8 +69,8 @@ public class GenericNodeTest {
 
 		assertEquals(r.relativePath(r.getChild(0)), Collections.singletonList("book"));
 
-		assertEquals(r.getChild(0).listChildPaths(false), Arrays.asList(new String[]{"category", "category/cooking", "title", "title/lang", "title/lang/en", "title/_text_",
-				"title/_text_/ Everyday Italian ", "author", "author/Rocco Puccini", "year", "year/2005", "price", "price/30.00"}));
+		assertEquals(r.getChild(0).listChildPaths(false), Arrays.asList("category", "category/cooking", "title", "title/lang", "title/lang/en", "title/_text_", "title/_text_/ Everyday Italian ",
+				"author", "author/Rocco Puccini", "year", "year/2005", "price", "price/30.00"));
 	}
 
 }

@@ -6,5 +6,5 @@ public class AtomicType extends Type {
 		super(name);
 	}
 
-	public static AtomicType TEXT = new AtomicType("text");
+	public static final AtomicType TEXT = new AtomicType("text");
 }

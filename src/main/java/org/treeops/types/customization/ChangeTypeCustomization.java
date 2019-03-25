@@ -43,11 +43,6 @@ public class ChangeTypeCustomization extends Customization {
 			return;
 		}
 
-		//		if (!schemaNode.getData().isValueHolder()) {
-		//			LOG.warn("schema node is not a value holder " + toString());
-		//			return;
-		//		}
-
 		if (schemaNode.getParent() == null) {
 			LOG.warn("not applicable to root " + toString());
 			return;
@@ -55,7 +50,7 @@ public class ChangeTypeCustomization extends Customization {
 
 		CompositeType type = CompositeType.findCompositeTypeForValueNode(schemaNode.getPath(), types);
 		if (type == null) {
-			LOG.warn("unable to find parent type " + toString() + " " + type);
+			LOG.warn("unable to find parent type " + toString());
 			return;
 		}
 

@@ -34,7 +34,6 @@ public class MoveToSiblingTransformation implements Transformation {
 			List<DataNode> found = p.getChilds(last);
 			p.getChildren().removeAll(found);
 			for (DataNode c : found) {
-				//TODO: if sibling not found, we might want to add new one!
 				for (DataNode sibling : siblingNodes) {
 					DataNode.copy(c, sibling);
 				}

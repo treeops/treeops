@@ -15,14 +15,15 @@ import org.slf4j.LoggerFactory;
 import org.treeops.csv.CsvReader;
 import org.treeops.csv.CsvWriter;
 import org.treeops.csv.Table;
+import org.treeops.ui.util.SuppressedWarnings;
 import org.treeops.utils.Utils;
-
+@SuppressWarnings(SuppressedWarnings.USELESS_ASSIGNMENT)
 public class CsvReaderTest {
 	private static final Logger LOG = LoggerFactory.getLogger(CsvReaderTest.class);
 	private Table t = table();
 
 	@Test
-	public void testRead() throws Exception {
+	public void testRead() {
 		DataNode root = CsvReader.parse(t);
 		LOG.info(DataNode.printElement(root));
 		checkTable(root);

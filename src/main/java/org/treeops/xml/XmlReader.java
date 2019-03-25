@@ -2,7 +2,7 @@ package org.treeops.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class XmlReader {
 		}
 		File tempFile = File.createTempFile("temp", ".xml");
 		tempFile.deleteOnExit();
-		Files.write(Paths.get(tempFile.getAbsolutePath()), xml.getBytes(Charset.forName("UTF-8")));
+		Files.write(Paths.get(tempFile.getAbsolutePath()), xml.getBytes(StandardCharsets.UTF_8));
 		return rawReadFile(tempFile);
 	}
 
@@ -77,7 +77,6 @@ public class XmlReader {
 
 	private static DataNode readTree(XMLEventReader reader) throws Exception {
 		List<DataNode> result = new ArrayList<>();
-
 		long elementCount = 0;
 		DataNode current = null;
 		while (reader.hasNext()) {
@@ -93,45 +92,55 @@ public class XmlReader {
 				String name = startNode.getName().getLocalPart();
 
 				current = addNode(current, name);
-				//xmlData(current).setNodeLocation(new XmlNodeLocation(startNode.getLocation().getLineNumber(), startNode.getLocation().getColumnNumber(), startNode.getLocation().getCharacterOffset()));
-
-				xmlData(current).setTempText("");//why do we need it????
-
-				@SuppressWarnings("unchecked")
-				Iterator<Attribute> attribs = startNode.getAttributes();
-				while (attribs.hasNext()) {
-					Attribute attribute = attribs.next();
-					String attributeName = name(attribute.getName());
-					addAttribute(current, attributeName, attribute.getValue());
-				}
+				xmlData(current).setTempText("");
+				attributes(current, startNode);
 
 			} else if (event.isEndElement()) {
 				if (current != null) {
-					String text = xmlData(current).getTempText();
-					if ((text != null) && (text.length() > 0)) {
-						setValueText(current, text);
-					}
+					endElement(result, current);
+					current = current.getParent();
 				}
-				if (current.getParent() == null) {
-					result.add(current);
-					//current.setTempText(null);//TODO:?? should it be for alll???
-				}
-				current = current.getParent();
-
 			} else if (event.isCharacters()) {
-				String text = event.asCharacters().getData();
-				if (!Utils.isWhiteSpaceOnly(text)) {
-					xmlData(current).setTempText(xmlData(current).getTempText() + text);//TODO: text separator???
-				} else {
-					if ((text != null) && (text.trim().length() > 0)) {
-						LOG.warn("current element is not present, text is ignored " + text);
-					}
-				}
+				processChars(current, event);
 			}
 
 		}
 		LOG.trace("completed");
 		return result.get(0);
+	}
+
+	private static void processChars(DataNode current, XMLEvent event) {
+		String text = event.asCharacters().getData();
+		if (current != null) {
+			if (!Utils.isWhiteSpaceOnly(text)) {
+				xmlData(current).setTempText(xmlData(current).getTempText() + text);
+			} else {
+				if ((text != null) && (text.trim().length() > 0)) {
+					LOG.warn("current element is not present, text is ignored " + text);
+				}
+			}
+		}
+	}
+
+	private static void endElement(List<DataNode> result, DataNode current) {
+		String text = xmlData(current).getTempText();
+		if ((text != null) && (text.length() > 0)) {
+			setValueText(current, text);
+		}
+
+		if (current.getParent() == null) {
+			result.add(current);
+		}
+	}
+
+	private static void attributes(DataNode current, StartElement startNode) {
+		@SuppressWarnings("unchecked")
+		Iterator<Attribute> attribs = startNode.getAttributes();
+		while (attribs.hasNext()) {
+			Attribute attribute = attribs.next();
+			String attributeName = name(attribute.getName());
+			addAttribute(current, attributeName, attribute.getValue());
+		}
 	}
 
 	private static void addAttribute(DataNode current, String attributeName, String value) {
@@ -158,11 +167,12 @@ public class XmlReader {
 		return (XmlParseData) n.getData();
 	}
 
+	/** namespaces should be reveiewed */
 	private static String name(QName name) {
 		if (name.getNamespaceURI().equals(XMLConstants.NULL_NS_URI)) {
 			return name.getLocalPart();
 		}
-		return name.getPrefix() + "__" + name.getLocalPart();//TODO: namespaces??? name.getNamespaceURI
+		return name.getPrefix() + "__" + name.getLocalPart();
 	}
 
 }

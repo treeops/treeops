@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/treeops/treeops.svg?branch=master)](https://travis-ci.org/treeops/treeops)
 
-TreeOps is a visual tool for reading, writing and transforming tree data in different formats. The following formats are supported:
+TreeOps is a visual tool for reading, transforming and comparing tree data in different formats. The following formats are supported:
 * XML
 * JSON 
 * CSV
@@ -16,11 +16,16 @@ TreeOps defines set of data tree transformations to facilitate typical data mani
 Transformations can be saved and re-applied again later. 
 
 TreeOps can effortlessly generate Java classes that will read and represent transformed data as simple POJOs(plain old java objects).
+
+User can select paths to be ignored by comparison.
+
 The project is hosted on [github](https://github.com/treeops/treeops)
+
 
 ## Table of contents
 1. [Example: Use Case](#usecase)
 1. [Example: Transforming XML to CSV](#examplexml2csv)
+1. [Example: Comparing](#comparing)
 1. [Example: Filtering](#filtering)
 1. [Example: Indexing and Regular expressions](#ExampleIndexing)
 1. [Example: Group and append child name](#ExampleGroup)
@@ -115,6 +120,49 @@ We would like to flatten the tree to display 8 rows in the table.
 * Transformations can be viewed and deleted by using "Transformations" tab 
 
 ![](docs/transformations.png)
+
+## Example: Comparing <a name="comparing"></a>
+
+Lets compare two XML trees: 
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<order>
+    <customer name="John"/>
+    <item productId="soap" quantity="100"/>
+    <item productId="bread" quantity="20"/>
+</order>
+```
+
+and 
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<order>
+    <customer/>
+    <item productId="soap" quantity="30"/>
+</order>
+
+```
+
+* Switch to the "Input/Output" tab
+* Type first XML text into the input text area and press "Load as XML text" button
+* Save the second XML file into some file, say "c:\somefile.xml"
+* Switch to "Compare" tab, press "Compare with XML ..." button. Now open file "c:\somefile.xml":
+
+![](docs/compare.png)
+
+* Now lets ignore the difference in customer - right click on the "order/customer/name" and select "Ignore" menu:
+
+
+![](docs/compareIgnore.png)
+
+The result:
+
+![](docs/compareIgnored.png)
+
+
+
 
 ## Example: Filtering <a name="filtering"></a>
 

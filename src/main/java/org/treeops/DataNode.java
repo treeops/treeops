@@ -23,15 +23,18 @@ public class DataNode extends GenericNode<ParseData> {
 	}
 
 	public static DataNode copy(DataNode n, DataNode newParent) {
-		return copy(n, newParent, -1);
-	}
-
-	public static DataNode copy(DataNode n, DataNode newParent, int indexInParent) {
 		DataNode c = new DataNode(newParent, n.getName(), n.getData().copy());
 		for (DataNode child : DataNode.children(n)) {
 			copy(child, c);
 		}
 		return c;
+	}
+
+	public static String value(DataNode n) {
+		if ((n != null) && n.getData().isValueHolder() && (n.getChildren().size() == 1)) {
+			return n.getSingleChild().getName();
+		}
+		return null;
 	}
 
 }

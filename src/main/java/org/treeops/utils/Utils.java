@@ -2,15 +2,32 @@ package org.treeops.utils;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
+
+	public static final String SLASH = "/";
+
+	public static File ensurePackageDirCreated(File outputDir, String packageName) {
+		File packageDir = Utils.packageDir(outputDir, packageName);
+		boolean created = packageDir.mkdirs();
+		if ((!created) && (!packageDir.exists())) {
+			throw new RuntimeException("unable to mkdirs " + packageDir.getAbsolutePath());
+		}
+		return packageDir;
+	}
+
+	public static File packageDir(File dir, String packageName) {
+		return new File(dir.getAbsolutePath() + File.separator + packageName.replaceAll("\\.", SLASH));
+	}
 
 	public static String last(List<String> path) {
 		return path.get(path.size() - 1);
@@ -33,15 +50,15 @@ public class Utils {
 	}
 
 	public static List<String> fromPath(String s) {
-		return list(s.split("/"));
+		return list(s.split(SLASH));
 	}
 
 	public static String spaces(int level) {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < level; i++) {
-			s += " ";
+			s.append(" ");
 		}
-		return s;
+		return s.toString();
 	}
 
 	public static String tabs(int level) {
@@ -82,7 +99,7 @@ public class Utils {
 	}
 
 	public static String readClasspathFile(String path, Class<?> clazz) throws Exception {
-		try (InputStream inputStream = clazz.getResourceAsStream(path); Scanner scanner = new Scanner(inputStream, "UTF-8");) {
+		try (InputStream inputStream = clazz.getResourceAsStream(path); Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name());) {
 			return scanner.useDelimiter("\\A").next();
 		}
 	}
@@ -98,11 +115,14 @@ public class Utils {
 		List<File> result = new ArrayList<>();
 		while (!folders.isEmpty()) {
 			File folder = folders.remove(0);
-			for (File file : folder.listFiles()) {
-				if (file.isDirectory()) {
-					folders.add(file);
-				} else {
-					result.add(file);
+			File[] folderFiles = folder.listFiles();
+			if (folderFiles != null) {
+				for (File file : folderFiles) {
+					if (file.isDirectory()) {
+						folders.add(file);
+					} else {
+						result.add(file);
+					}
 				}
 			}
 		}
@@ -110,7 +130,27 @@ public class Utils {
 	}
 
 	public static String packageNameToPath(String packageName) {
-		return packageName.replaceAll("\\.", "/");
+		return packageName.replaceAll("\\.", SLASH);
 	}
 
+	public static boolean sameText(String s1, String s2) {
+		if (s1 == null) {
+			return s2 == null;
+		}
+		if (s2 == null) {
+			return false;
+		}
+		return s1.equals(s2);
+	}
+
+	public static String truncateText(Collection<String> values, int maxChars) {
+		if (values.isEmpty()) {
+			return "";
+		}
+		String res = "" + values;
+		if (res.length() > maxChars) {
+			return res.substring(0, maxChars);
+		}
+		return res;
+	}
 }

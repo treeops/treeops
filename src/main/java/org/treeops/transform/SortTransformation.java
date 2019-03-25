@@ -28,9 +28,9 @@ public class SortTransformation implements Transformation {
 			List<DataNode> found = p.getChilds(last);
 			int first = found.get(0).indexInParent();
 
-			found = sort(found, sortKeys);
-			p.getChildren().removeAll(found);
-			for (DataNode c : found) {
+			List<DataNode> sorted = sort(found, sortKeys);
+			p.getChildren().removeAll(sorted);
+			for (DataNode c : sorted) {
 				p.getChildren().add(first++, c);
 			}
 		}

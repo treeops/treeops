@@ -2,6 +2,7 @@ package org.treeops;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class CodeGeneratorRunner {
 		LOG.info("completed");
 	}
 
-	public static ArrayList<Transformation> bookTransformations() {
+	public static List<Transformation> bookTransformations() {
 		ArrayList<Transformation> transformations = new ArrayList<>();
 
 		transformations.add(new RenameTransformation(Utils.list("bookstore"), "books"));

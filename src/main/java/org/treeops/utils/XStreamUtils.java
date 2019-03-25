@@ -20,12 +20,12 @@ public class XStreamUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T readFile(File file) throws Exception {
+	public static <T> T readFile(File file) {
 		return (T) xstreamInstance().fromXML(file);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T read(String xml) throws Exception {
+	public static <T> T read(String xml) {
 		return (T) xstreamInstance().fromXML(xml);
 	}
 

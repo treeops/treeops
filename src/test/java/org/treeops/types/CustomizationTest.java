@@ -19,6 +19,7 @@ import org.treeops.types.customization.JoinMutuallyExclusiveCustomization;
 import org.treeops.types.customization.MakeEnumCustomization;
 import org.treeops.types.customization.MoveToSuperTypeCustomization;
 import org.treeops.types.customization.SetSuperTypeCustomization;
+import org.treeops.ui.util.SuppressedWarnings;
 import org.treeops.utils.Utils;
 
 public class CustomizationTest {
@@ -42,7 +43,8 @@ public class CustomizationTest {
 	}
 
 	@Test
-	public void testTypes() throws Exception {
+	@SuppressWarnings(SuppressedWarnings.USELESS_ASSIGNMENT)
+	public void testTypes() {
 		DataNode root = new DataNode(null, "friends");
 
 		add(root, "Emma", "tennis", true, "Bear", "leather", 8);

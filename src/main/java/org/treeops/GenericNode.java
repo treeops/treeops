@@ -68,6 +68,17 @@ public class GenericNode<T> {
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <D extends GenericNode<T>> D getChild(String childName, int idx) {
+		List<D> res = new ArrayList<>();
+		for (GenericNode<T> c : children) {
+			if (childName.equals(c.getName())) {
+				res.add((D) c);
+			}
+		}
+		return res.get(idx);
+	}
+
 	public static <T, D extends GenericNode<T>> List<D> getSiblings(D node) {
 		D parent = node.getParent();
 		List<D> all = children(parent);
@@ -107,11 +118,11 @@ public class GenericNode<T> {
 	}
 
 	public static <T> String printElement(GenericNode<T> e, int level) {
-		String s = "\n" + Utils.tabs(level) + e.getName();
+		StringBuilder s = new StringBuilder("\n" + Utils.tabs(level) + e.getName() + " " + e.getData());
 		for (GenericNode<T> c : e.getChildren()) {
-			s += printElement(c, level + 1);
+			s.append(printElement(c, level + 1));
 		}
-		return s;
+		return s.toString();
 	}
 
 	public void setChildren(List<GenericNode<T>> children) {
@@ -171,8 +182,8 @@ public class GenericNode<T> {
 	public <D extends GenericNode<T>> D findDescendant(List<String> path) {
 		@SuppressWarnings("unchecked")
 		D current = (D) this;
-		for (String name : path) {
-			current = current.getChild(name);
+		for (String pe : path) {
+			current = current.getChild(pe);
 			if (current == null) {
 				break;
 			}
@@ -231,7 +242,7 @@ public class GenericNode<T> {
 		return getPathToRoot();
 	}
 
-	public <D extends GenericNode<T>> int indexInParent() {
+	public int indexInParent() {
 		if (getParent() != null) {
 			int i = -1;
 			for (GenericNode<T> c : getParent().children) {
@@ -285,4 +296,7 @@ public class GenericNode<T> {
 		children = children.stream().filter(c -> !c.getName().equals(childName)).collect(Collectors.toList());
 	}
 
+	public boolean hasChildren() {
+		return !children.isEmpty();
+	}
 }

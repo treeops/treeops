@@ -31,30 +31,30 @@ public class JsonSchemaTest {
 	}
 
 	@Test
-	public void testArray() throws Exception {
+	public void testArray() {
 		SchemaNode schemaRoot = read("[{\"a\":1, \"b\":2}, {\"a\":3,\"b\":4}]");
 		assertEquals(schemaRoot.getName(), "root");
 	}
 
 	@Test
-	public void testObject() throws Exception {
+	public void testObject() {
 		SchemaNode schemaRoot = read("{\"a\":1, \"b\":2}");
 		assertEquals(schemaRoot.getName(), "Object");
 	}
 
 	@Test
-	public void testNullObject() throws Exception {
+	public void testNullObject() {
 		SchemaNode schemaRoot = read("[{\"a\":{ \"b\":2}}, {\"a\":null}]");
 		assertEquals(schemaRoot.getName(), "root");
 	}
 
 	@Test
-	public void testSinleNullObject() throws Exception {
+	public void testSinleNullObject() {
 		SchemaNode schemaRoot = read("[{\"a\":null}]");
 		assertEquals(schemaRoot.getName(), "root");
 	}
 
-	private SchemaNode read(String json) throws Exception {
+	private SchemaNode read(String json) {
 		DataNode root = JsonReader.read(json);
 		LOG.info("read " + DataNode.printElement(root));
 		SchemaNode schemaRoot = SchemaExtractor.schema(root);

@@ -102,7 +102,7 @@ public class TypeExtractor {
 					anotherVariable.setMandatory(false);
 				}
 
-				if (v.getType() != anotherVariable.getType()) {
+				if (!v.getType().equals(anotherVariable.getType())) {
 					LOG.warn("merge - different type encountered " + type.getPaths() + " " + v.getType() + " " + anotherVariable.getType());
 				}
 			}

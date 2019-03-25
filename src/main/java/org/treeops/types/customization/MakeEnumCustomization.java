@@ -64,7 +64,7 @@ public class MakeEnumCustomization extends Customization {
 
 		CompositeType type = CompositeType.findCompositeTypeForValueNode(schemaNode.getPath(), types);
 		if (type == null) {
-			LOG.warn("unable to find parent type " + toString() + " " + type);
+			LOG.warn("unable to find parent type " + toString());
 			return;
 		}
 		TypeVariable variable = type.getVariable(Utils.last(getPath()));

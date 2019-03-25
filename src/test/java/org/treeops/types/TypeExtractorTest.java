@@ -11,20 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
 import org.treeops.SchemaData;
-import org.treeops.SchemaNode;
 import org.treeops.SchemaExtractor;
-import org.treeops.types.AtomicType;
-import org.treeops.types.CompositeType;
-import org.treeops.types.PatternedType;
-import org.treeops.types.Type;
-import org.treeops.types.TypeExtractor;
-import org.treeops.types.TypeVariable;
+import org.treeops.SchemaNode;
+import org.treeops.ui.util.SuppressedWarnings;
 import org.treeops.utils.Utils;
 import org.treeops.xml.XmlReader;
 
 public class TypeExtractorTest {
 	private static final Logger LOG = LoggerFactory.getLogger(TypeExtractorTest.class);
 
+	@SuppressWarnings(SuppressedWarnings.USELESS_ASSIGNMENT)
 	@Test
 	public void testTypes() throws Exception {
 		DataNode r = XmlReader.read(new File("src/test/resources/books.xml"));
@@ -65,7 +61,6 @@ public class TypeExtractorTest {
 		assertEquals(compositeType.getVariables().get(j++).toString(), "optional?:text");
 
 		type = types.get(i++);
-		compositeType = (CompositeType) type;
 		assertEquals(type.getName(), "title");
 
 	}

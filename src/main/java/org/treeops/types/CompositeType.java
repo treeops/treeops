@@ -80,20 +80,20 @@ public class CompositeType extends Type {
 	}
 
 	public static CompositeType findCompositeType(List<String> path, List<Type> list) {
-		Type t = findType(path, list, true);
-		if ((t != null) && (t instanceof CompositeType)) {
-			return (CompositeType) t;
-		}
-		return null;
+		return findComnposite(path, list, true);
 	}
 
 	public static CompositeType findCompositeTypeOnly(List<String> path, List<Type> list) {
-		Type t = findType(path, list, false);
-		if ((t != null) && (t instanceof CompositeType)) {
+		return findComnposite(path, list, false);
+
+	}
+
+	private static CompositeType findComnposite(List<String> path, List<Type> list, boolean inVariables) {
+		Type t = findType(path, list, inVariables);
+		if (t instanceof CompositeType) {
 			return (CompositeType) t;
 		}
 		return null;
-
 	}
 
 	public static CompositeType findCompositeTypeForValueNode(List<String> path, List<Type> list) {

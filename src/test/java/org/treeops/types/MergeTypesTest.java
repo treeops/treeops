@@ -8,17 +8,16 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
-import org.treeops.SchemaNode;
 import org.treeops.SchemaExtractor;
-import org.treeops.types.CompositeType;
-import org.treeops.types.Type;
-import org.treeops.types.TypeExtractor;
+import org.treeops.SchemaNode;
+import org.treeops.ui.util.SuppressedWarnings;
 
 public class MergeTypesTest {
 	private static final Logger LOG = LoggerFactory.getLogger(MergeTypesTest.class);
 
+	@SuppressWarnings(SuppressedWarnings.USELESS_ASSIGNMENT)
 	@Test
-	public void testTypes() throws Exception {
+	public void testTypes() {
 
 		DataNode order = new DataNode(null, "order");
 		DataNode.valueNode(order, "quantity", "300");

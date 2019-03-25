@@ -8,7 +8,6 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.treeops.DataNode;
 import org.treeops.csv.CsvWriter;
 import org.treeops.csv.Table;
 import org.treeops.utils.Utils;

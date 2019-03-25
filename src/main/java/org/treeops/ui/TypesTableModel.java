@@ -10,7 +10,7 @@ import org.treeops.types.EnumType;
 import org.treeops.types.Type;
 
 public class TypesTableModel extends AbstractTableModel {
-	private final String[] COLUMNS = {"Type", "Description", "Vars", "Used"};
+	private static final String[] COLUMNS = {"Type", "Description", "Vars", "Used"};
 
 	private List<Type> list = new ArrayList<>();
 
@@ -44,16 +44,13 @@ public class TypesTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Type r = list.get(rowIndex);
-		CompositeType compositeType = null;
-		if (r instanceof CompositeType) {
-			compositeType = (CompositeType) r;
-		}
+		CompositeType compositeType = compositeType(r);
 
 		if (columnIndex == 0) {
 			return r.getName();
 		} else if (columnIndex == 1) {
 
-			if (r instanceof CompositeType) {
+			if (compositeType != null) {
 				String res = "composite";
 				if ((compositeType.getSuperType() != null)) {
 					res = "extends " + compositeType.getSuperType() + " ";
@@ -65,7 +62,7 @@ public class TypesTableModel extends AbstractTableModel {
 				return "";
 			}
 		} else if (columnIndex == 2) {
-			if (r instanceof CompositeType) {
+			if (compositeType != null) {
 				return compositeType.getVariables().size();
 			}
 			return "";
@@ -75,5 +72,13 @@ public class TypesTableModel extends AbstractTableModel {
 		}
 
 		return null;
+	}
+
+	private CompositeType compositeType(Type r) {
+		CompositeType compositeType = null;
+		if (r instanceof CompositeType) {
+			compositeType = (CompositeType) r;
+		}
+		return compositeType;
 	}
 }

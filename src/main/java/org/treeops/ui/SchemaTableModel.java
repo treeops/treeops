@@ -1,15 +1,15 @@
 package org.treeops.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.treeops.SchemaNode;
+import org.treeops.utils.Utils;
 
 public class SchemaTableModel extends AbstractTableModel {
-	private final String[] COLUMNS = {"Path", "Optional", "Occurs", "Total", "Type", "Values"};
+	private static final String[] COLUMNS = {"Path", "Optional", "Occurs", "Total", "Type", "Values"};
 
 	private List<SchemaNode> list = new ArrayList<>();
 
@@ -59,18 +59,14 @@ public class SchemaTableModel extends AbstractTableModel {
 		} else if (columnIndex == 3) {
 			return "" + r.getData().getTotal();
 		} else if (columnIndex == 4) {
-			return r.getData().isValueHolder() ? "Value" : (r.getChildren().isEmpty() ? "Leaf" : "");
+			if (r.getData().isValueHolder()) {
+				return "Value";
+			}
+			return r.getChildren().isEmpty() ? "Leaf" : "";
 		} else if (columnIndex == 5) {
-			return truncateText(r.getData().getValues(), 100);
+			return Utils.truncateText(r.getData().getValues(), 100);
 		}
 		return null;
-	}
-
-	private static String truncateText(Collection<String> values, int maxChars) {
-		if (values.isEmpty()) {
-			return "";
-		}
-		return "" + values;
 	}
 
 }

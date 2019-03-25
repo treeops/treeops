@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import org.treeops.types.TypeVariable;
 
 public class VariablesTableModel extends AbstractTableModel {
-	private final String[] COLUMNS = {"Name", "Type", "Optional", "List"};
+	private static final String[] COLUMNS = {"Name", "Type", "Optional", "List"};
 
 	private List<TypeVariable> list = new ArrayList<>();
 

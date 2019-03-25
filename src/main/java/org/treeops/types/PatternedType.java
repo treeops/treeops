@@ -17,9 +17,8 @@ public class PatternedType extends AtomicType {
 		return regexp;
 	}
 
-	public static PatternedType INTEGER = new PatternedType("integer", "^\\-?[0-9]+$");
-	public static PatternedType DOUBLE = new PatternedType("double", "^\\-?[0-9]+(\\.[0-9]*)?$");
-	//TODO: decimal/boolean/date
+	public static final PatternedType INTEGER = new PatternedType("integer", "^\\-?[0-9]+$");
+	public static final PatternedType DOUBLE = new PatternedType("double", "^\\-?[0-9]+(\\.[0-9]*)?$");
 
 	public static List<PatternedType> list() {
 		return Utils.list(INTEGER, DOUBLE);

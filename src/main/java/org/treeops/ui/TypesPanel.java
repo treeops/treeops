@@ -49,7 +49,8 @@ public class TypesPanel extends JPanel {
 	private JSplitPane detailsAndPathsPanel;
 
 	private final Consumer<String> pathSelectedConsumer;
-	private class EnumPanel extends JPanel {
+
+	private static class EnumPanel extends JPanel {
 		JTextField typeName = new JTextField();
 
 		EnumPanel() {
@@ -85,7 +86,7 @@ public class TypesPanel extends JPanel {
 
 	}
 
-	private class SimplePanel extends JPanel {
+	private static class SimplePanel extends JPanel {
 		JTextField typeName = new JTextField();
 
 		SimplePanel() {
@@ -140,7 +141,7 @@ public class TypesPanel extends JPanel {
 
 		this.add(splitPane, BorderLayout.CENTER);
 
-		typesTable.getSelectionModel().addListSelectionListener(e -> typeSelected(e));
+		typesTable.getSelectionModel().addListSelectionListener(e -> typeSelected());
 		selectRowOnClick();
 
 		GuiUtils.setWidth(50, typesTable.getColumnModel().getColumn(2));
@@ -170,7 +171,7 @@ public class TypesPanel extends JPanel {
 		b.addActionListener(e -> runnable.run());
 	}
 
-	private synchronized void typeSelected(ListSelectionEvent e) {
+	private synchronized void typeSelected() {
 		int selectedRow = typesTable.getSelectedRow();
 		Type type = (selectedRow < 0) ? null : typesTableModel.getList().get(selectedRow);
 		if (type != null) {
@@ -185,7 +186,7 @@ public class TypesPanel extends JPanel {
 				selectDetails(SIMPLE_PANEL, type);
 			}
 		} else {
-			selectDetails(EMPTY_PANEL, type);
+			selectDetails(EMPTY_PANEL, null);
 		}
 	}
 

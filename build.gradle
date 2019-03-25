@@ -3,6 +3,10 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'application'
 
+/*plugins {
+  id "org.sonarqube" version "2.7"
+}*/
+
 repositories {
     mavenCentral()
 }
@@ -15,7 +19,8 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'ch.qos.logback:logback-classic:1.1.7'
     compile 'org.apache.velocity:velocity-engine-core:2.0'
-    
+    testCompile 'io.cucumber:cucumber-java8:4.2.5'
+    testCompile 'io.cucumber:cucumber-junit:4.2.5'
     testCompile 'junit:junit:4.12'
 }
 

@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
-import org.treeops.transform.DeleteTransformation;
 import org.treeops.utils.Utils;
 import org.treeops.xml.XmlReader;
 
@@ -71,7 +70,7 @@ public class DeleteTransformationTest {
 	}
 
 	@Test
-	public void testDeleteRootPrevented() throws Exception {
+	public void testDeleteRootPrevented() {
 		DataNode r = new DataNode("root");
 
 		LOG.info(DataNode.printElement(r));

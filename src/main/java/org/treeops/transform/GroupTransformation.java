@@ -42,12 +42,7 @@ public class GroupTransformation implements Transformation {
 				if (value == null) {
 					value = "";
 				}
-				DataNode groupNode = group2nodes.get(value);
-				if (groupNode == null) {
-					groupNode = new DataNode(groupName);
-					group2nodes.put(value, groupNode);
-				}
-				c.addToParent(groupNode);
+				c.addToParent(group2nodes.computeIfAbsent(value, k -> new DataNode(groupName)));
 			}
 
 			p.getChildren().removeAll(found);

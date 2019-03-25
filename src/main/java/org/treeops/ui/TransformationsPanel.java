@@ -3,7 +3,7 @@ package org.treeops.ui;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -14,9 +14,9 @@ import javax.swing.JTable;
 public class TransformationsPanel extends JPanel {
 	private TransformationsTableModel tableModel = new TransformationsTableModel();
 	private JTable table = new JTable(tableModel);
-	private final Consumer<Integer> deleteListener;
+	private final IntConsumer deleteListener;
 
-	public TransformationsPanel(Consumer<Integer> deleteListener) {
+	public TransformationsPanel(IntConsumer deleteListener) {
 		super();
 		this.deleteListener = deleteListener;
 		this.setLayout(new BorderLayout());
@@ -40,11 +40,11 @@ public class TransformationsPanel extends JPanel {
 
 	private void initMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
-		{
-			JMenuItem menuItem = new JMenuItem("Delete");
-			menuItem.addActionListener(e -> delete());
-			popupMenu.add(menuItem);
-		}
+
+		JMenuItem menuItem = new JMenuItem("Delete");
+		menuItem.addActionListener(e -> delete());
+		popupMenu.add(menuItem);
+
 		table.setComponentPopupMenu(popupMenu);
 	}
 

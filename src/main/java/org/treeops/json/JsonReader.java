@@ -28,7 +28,7 @@ public class JsonReader {
 		return parse(createParser(file));
 	}
 
-	public static DataNode read(String s) throws Exception {
+	public static DataNode read(String s) {
 		return parse(createParser(s));
 	}
 
@@ -57,7 +57,7 @@ public class JsonReader {
 		if (LOG.isTraceEnabled()) {
 			LOG.trace("after remove array \n" + DataNode.printElement(parseResult.root));
 		}
-		if ((parseResult.firstArrayOrObject != null) && (parseResult.firstArrayOrObject.booleanValue() == false)) {
+		if ((parseResult.firstArrayOrObject != null) && (!parseResult.firstArrayOrObject.booleanValue())) {
 			DataNode newRoot = parseResult.root.getSingleChild();
 			newRoot.setParent(null);
 			return newRoot;
@@ -79,53 +79,52 @@ public class JsonReader {
 			if ((elementCount % 5000000) == 0) {
 				LOG.info("processing " + elementCount);
 			}
-			//LOG.trace("" + event + " " + (((event == Event.KEY_NAME) || (event == Event.VALUE_NUMBER) || (event == Event.VALUE_STRING)) ? parser.getString() : "") + " " + current.getPathToRoot());
 			switch (event) {
 
-				case START_ARRAY : {
+				case START_ARRAY :
 					parseResult.start(true);
 					current = addNode(current, notNull(jsonData(current).getJsonLastName(), ARRAY));
 					jsonData(current).setNodeType(JsonNodeType.JSONARRAY);
 					break;
-				}
-				case END_ARRAY : {
+
+				case END_ARRAY :
 					current = current.getParent();
 					break;
-				}
-				case START_OBJECT : {
+
+				case START_OBJECT :
 					parseResult.start(false);
 					current = addNode(current, notNull(jsonData(current).getJsonLastName(), OBJECT));
 					jsonData(current).setNodeType(JsonNodeType.JSONOBJECT);
 					break;
-				}
-				case END_OBJECT : {
+
+				case END_OBJECT :
 					current = current.getParent();
 					break;
-				}
-				case KEY_NAME : {
+
+				case KEY_NAME :
 					jsonData(current).setJsonLastName(parser.getString());
 					break;
-				}
-				case VALUE_STRING : {
+
+				case VALUE_STRING :
 					current = value(current, parser.getString());
 					break;
-				}
-				case VALUE_NUMBER : {
+
+				case VALUE_NUMBER :
 					current = value(current, parser.getString());
 					break;
-				}
-				case VALUE_TRUE : {
+
+				case VALUE_TRUE :
 					current = value(current, Boolean.TRUE.toString());
 					break;
-				}
-				case VALUE_FALSE : {
+
+				case VALUE_FALSE :
 					current = value(current, Boolean.FALSE.toString());
 					break;
-				}
-				case VALUE_NULL : {
+
+				case VALUE_NULL :
 					current = value(current, null);
 					break;
-				}
+
 			}
 		}
 		parser.close();

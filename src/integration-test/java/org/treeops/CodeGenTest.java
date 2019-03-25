@@ -29,12 +29,11 @@ public class CodeGenTest {
 
 	@Test
 	public void test() throws Exception {
-		//TODO: run from gradle!
 		LOG.info("******************* code gen test");
 
 		File tempFile = File.createTempFile("tempDir", "");
 		File classesDir = new File(tempFile.getAbsolutePath() + ".classes");
-		classesDir.mkdir();
+		assertTrue(classesDir.mkdir());
 		File srcDir = new File(tempFile.getAbsolutePath() + ".src");
 		srcDir.mkdir();
 		LOG.info(" classes " + classesDir + " src: " + srcDir);

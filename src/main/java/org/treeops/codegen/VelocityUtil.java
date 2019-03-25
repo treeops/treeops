@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.apache.velocity.Template;
@@ -36,7 +36,7 @@ public class VelocityUtil {
 	}
 
 	public static void write(File output, Map<String, Object> objects, String templateName) throws Exception {
-		try (FileOutputStream fos = new FileOutputStream(output); OutputStreamWriter osw = new OutputStreamWriter(fos, Charset.forName("UTF-8"));) {
+		try (FileOutputStream fos = new FileOutputStream(output); OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);) {
 			write(objects, templateName, osw);
 		}
 	}

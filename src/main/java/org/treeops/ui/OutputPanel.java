@@ -2,9 +2,8 @@ package org.treeops.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import javax.swing.BorderFactory;
@@ -32,7 +31,7 @@ public class OutputPanel extends JPanel {
 	private Supplier<List<Transformation>> transformationsSupplier;
 
 	private TitledBorder border = BorderFactory.createTitledBorder("Output");
-	private Map<Format, JTextArea> format2TextArea = new HashMap<>();
+	private EnumMap<Format, JTextArea> format2TextArea = new EnumMap<>(Format.class);
 
 	private JTabbedPane tabbedPanel = new JTabbedPane();
 	private JButton refreshButton = new JButton("Refresh");

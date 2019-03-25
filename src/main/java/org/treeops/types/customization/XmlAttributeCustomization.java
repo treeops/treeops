@@ -24,7 +24,7 @@ public class XmlAttributeCustomization extends Customization {
 
 	@Override
 	public void process(SchemaNode rootSchema, List<Type> types) {
-
+		//ignore
 	}
 
 }

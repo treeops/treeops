@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import org.treeops.transform.Transformation;
 
 public class TransformationsTableModel extends AbstractTableModel {
-	private final String[] COLUMNS = {"Transformation"};
+	private static final String[] COLUMNS = {"Transformation"};
 
 	private List<Transformation> list = new ArrayList<>();
 

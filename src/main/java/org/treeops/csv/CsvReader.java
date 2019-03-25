@@ -1,7 +1,7 @@
 package org.treeops.csv;
 
 import java.io.File;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.treeops.DataNode;
 
 public class CsvReader {
-	private final static CSVFormat CSV_FORMAT = CSVFormat.EXCEL.withFirstRecordAsHeader();
+	private static final CSVFormat CSV_FORMAT = CSVFormat.EXCEL.withFirstRecordAsHeader();
 	public static final String ROOT = "root";
 	public static final String ROW = "row";
 
@@ -25,7 +25,7 @@ public class CsvReader {
 	}
 
 	protected static Table readTable(File file) throws Exception {
-		return parse(CSVParser.parse(file, Charset.forName("UTF-8"), CSV_FORMAT));
+		return parse(CSVParser.parse(file, StandardCharsets.UTF_8, CSV_FORMAT));
 	}
 
 	protected static Table readTable(String csvText) throws Exception {
@@ -35,8 +35,6 @@ public class CsvReader {
 	private static Table parse(CSVParser parser) {
 		Table table = new Table();
 		parser.getHeaderMap().forEach((k, v) -> table.getColumns().add(k));
-		//TODO: columns in order of appearence!!!
-
 		for (CSVRecord r : parser) {
 			List<String> values = new ArrayList<>();
 			table.addRow(values);

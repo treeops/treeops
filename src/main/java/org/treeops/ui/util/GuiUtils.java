@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.Function;
 
@@ -26,9 +28,15 @@ public class GuiUtils {
 	private static final Logger LOG = LoggerFactory.getLogger(GuiUtils.class);
 
 	public static JMenuItem menuItem(JMenu menu, String name, Runnable al) {
+		JMenuItem menuItem = menuItem(name, al);
+
+		menu.add(menuItem);
+		return menuItem;
+	}
+
+	public static JMenuItem menuItem(String name, Runnable al) {
 		JMenuItem menuItem = new JMenuItem(name);
 		menuItem.addActionListener(e -> al.run());
-		menu.add(menuItem);
 		return menuItem;
 	}
 
@@ -46,7 +54,7 @@ public class GuiUtils {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error: " + e, e);
 		}
 	}
 
@@ -119,6 +127,17 @@ public class GuiUtils {
 			return function.apply(input);
 		}
 		return null;
+	}
+
+	public static void selectRowOnClick(JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent event) {
+				int currentRow = table.rowAtPoint(event.getPoint());
+				table.setRowSelectionInterval(currentRow, currentRow);
+			}
+
+		});
 	}
 
 }

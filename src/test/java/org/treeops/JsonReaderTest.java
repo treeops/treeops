@@ -6,13 +6,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.treeops.DataNode;
-import org.treeops.SchemaNode;
-import org.treeops.SchemaExtractor;
 import org.treeops.json.JsonPrettyPrinter;
 import org.treeops.json.JsonReader;
 import org.treeops.json.JsonWriter;
-
+import org.treeops.ui.util.SuppressedWarnings;
+@SuppressWarnings(SuppressedWarnings.USELESS_ASSIGNMENT)
 public class JsonReaderTest {
 	private static final Logger LOG = LoggerFactory.getLogger(JsonReaderTest.class);
 

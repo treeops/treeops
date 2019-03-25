@@ -22,13 +22,12 @@ public class MoveUpBecomeParentTransformation implements Transformation {
 		List<DataNode> parents = DataNode.findList(root, parentPath);
 
 		for (DataNode p : parents) {
-			int parentIndex = p.indexInParent();
+
 			List<DataNode> found = p.getChilds(last);
 			p.getChildren().removeAll(found);
 
 			for (DataNode f : found) {
-				DataNode c = DataNode.copy(f, p.getParent(), parentIndex++);
-				//p.getParent().getChildren().add(parentIndex++, c);
+				DataNode c = DataNode.copy(f, p.getParent());
 				DataNode.copy(p, c);
 			}
 		}

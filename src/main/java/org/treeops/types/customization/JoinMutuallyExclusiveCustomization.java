@@ -54,38 +54,20 @@ public class JoinMutuallyExclusiveCustomization extends Customization {
 
 		CompositeType type = CompositeType.findCompositeTypeOnly(schemaNode.getPath(), types);
 		if (type == null) {
-			LOG.warn("unable to find type " + toString() + " " + type);
+			LOG.warn("unable to find type " + toString());
 			return;
 		}
 
+		join(types, type);
+
+	}
+
+	private void join(List<Type> types, CompositeType type) {
 		TypeVariable joinedVar = new TypeVariable(newName);
 
 		List<TypeVariable> removedVariables = new ArrayList<>();
 		List<TypeVariable> updatedVariables = new ArrayList<>();
-		int firstIdx = -1;
-		int i = -1;
-		for (TypeVariable v : type.getVariables()) {
-			i++;
-			if (names.contains(v.getName())) {
-				if (firstIdx < 0) {
-					firstIdx = i;
-				}
-				if (!v.getType().equals(joinedVar.getType())) {
-					LOG.warn("different type " + toString() + " var: " + v);
-				}
-
-				if (v.isMandatory()) {
-					joinedVar.setMandatory(true);
-				}
-				if (v.isCollection()) {
-					joinedVar.setCollection(true);
-				}
-
-				removedVariables.add(v);
-				continue;
-			}
-			updatedVariables.add(v);
-		}
+		int firstIdx = removedAndUpdated(type, joinedVar, removedVariables, updatedVariables);
 
 		if (removedVariables.isEmpty()) {
 			LOG.warn("removed variables not found! " + toString());
@@ -119,7 +101,34 @@ public class JoinMutuallyExclusiveCustomization extends Customization {
 		for (TypeVariable v : removedVariables) {
 			oldName2Type.put(v.getName(), v.getType());
 		}
+	}
 
+	private int removedAndUpdated(CompositeType type, TypeVariable joinedVar, List<TypeVariable> removedVariables, List<TypeVariable> updatedVariables) {
+		int firstIdx = -1;
+		int i = -1;
+		for (TypeVariable v : type.getVariables()) {
+			i++;
+			if (names.contains(v.getName())) {
+				if (firstIdx < 0) {
+					firstIdx = i;
+				}
+				if (!v.getType().equals(joinedVar.getType())) {
+					LOG.warn("different type " + toString() + " var: " + v);
+				}
+
+				if (v.isMandatory()) {
+					joinedVar.setMandatory(true);
+				}
+				if (v.isCollection()) {
+					joinedVar.setCollection(true);
+				}
+
+				removedVariables.add(v);
+				continue;
+			}
+			updatedVariables.add(v);
+		}
+		return firstIdx;
 	}
 
 	private List<String> types(String type, List<Type> types) {

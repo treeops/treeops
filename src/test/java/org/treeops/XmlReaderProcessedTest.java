@@ -8,7 +8,6 @@ import java.io.File;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.treeops.DataNode;
 import org.treeops.xml.XmlPrettyPrinter;
 import org.treeops.xml.XmlReader;
 import org.treeops.xml.XmlWriter;

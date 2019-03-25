@@ -8,15 +8,11 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
 import org.treeops.SchemaExtractor;
 import org.treeops.SchemaNode;
 
 public class JsonWriter {
-
-	private static final Logger LOG = LoggerFactory.getLogger(JsonWriter.class);
 
 	public static String write(DataNode root) throws Exception {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -32,7 +28,6 @@ public class JsonWriter {
 		}
 	}
 
-	//TODO: isValue() belongs to schema, use it from there!
 	private static void writeRoot(DataNode root, JsonGenerator jsonGenerator) {
 		SchemaNode schema = SchemaExtractor.schema(root);
 		if ((schema.getChildren().size() == 1) && (schema.getSingleChild().getData().getMaxOccurs() == 1) && root.getData().isValueHolder()) {
@@ -51,45 +46,49 @@ public class JsonWriter {
 	}
 
 	private static void writeChildren(JsonGenerator jsonGenerator, DataNode node, SchemaNode rootSchema) {
-
-		//TODO: distinguish empty array and null?
 		SchemaNode schema = rootSchema.find(node.getPath());
-		List<SchemaNode> schemaChildren = schema.getChildren();
-		for (SchemaNode sc : schemaChildren) {
+		SchemaNode.children(schema).forEach(sc -> writeChild(jsonGenerator, node, rootSchema, sc));
+	}
 
-			if (sc.getData().getMaxOccurs() > 1) {
-				List<DataNode> childs = node.getChilds(sc.getName());
-				if (childs.isEmpty() && !sc.getData().isMandatory()) {
+	private static void writeChild(JsonGenerator jsonGenerator, DataNode node, SchemaNode rootSchema, SchemaNode sc) {
+		if (sc.getData().isList()) {
+			writeListChild(jsonGenerator, node, rootSchema, sc);
+		} else {
+			writeNonListChild(jsonGenerator, node, rootSchema, sc);
+		}
+	}
 
+	private static void writeNonListChild(JsonGenerator jsonGenerator, DataNode node, SchemaNode rootSchema, SchemaNode sc) {
+		DataNode c = node.getChild(sc.getName());
+		if (c != null) {
+			String name = c.getName();
+			if (c.getData().isValueHolder()) {
+				if (c.hasSingleChild()) {
+					jsonGenerator.write(name, c.getSingleChild().getName());
 				} else {
-					jsonGenerator.writeStartArray(sc.getName());
-					writeArrayElements(jsonGenerator, rootSchema, childs);
-					jsonGenerator.writeEnd();
+					jsonGenerator.writeNull(name);
 				}
-
+			} else if (c.getChildren().isEmpty()) {
+				jsonGenerator.writeStartObject(name).writeEnd();
+			} else if (c.hasSingleChild() && (c.getSingleChild().getChildren().isEmpty())) {
+				jsonGenerator.write(name, c.getSingleChild().getName());
 			} else {
-				DataNode c = node.getChild(sc.getName());
-				if (c != null) {
-					String name = c.getName();
-					if (c.getData().isValueHolder()) {
-						if (c.hasSingleChild()) {
-							jsonGenerator.write(name, c.getSingleChild().getName());
-						} else {
-							jsonGenerator.writeNull(name);
-						}
-					} else if (c.getChildren().isEmpty()) {
-						jsonGenerator.writeStartObject(name).writeEnd();
-					} else if (c.hasSingleChild() && (c.getSingleChild().getChildren().isEmpty())) {
-						jsonGenerator.write(name, c.getSingleChild().getName());
-					} else {
-						jsonGenerator.writeStartObject(name);
-						writeChildren(jsonGenerator, c, rootSchema);
-						jsonGenerator.writeEnd();
-					}
-
-				}
+				jsonGenerator.writeStartObject(name);
+				writeChildren(jsonGenerator, c, rootSchema);
+				jsonGenerator.writeEnd();
 			}
 
+		}
+	}
+
+	private static void writeListChild(JsonGenerator jsonGenerator, DataNode node, SchemaNode rootSchema, SchemaNode sc) {
+		List<DataNode> childs = node.getChilds(sc.getName());
+		if (childs.isEmpty() && !sc.getData().isMandatory()) {
+			//ignored
+		} else {
+			jsonGenerator.writeStartArray(sc.getName());
+			writeArrayElements(jsonGenerator, rootSchema, childs);
+			jsonGenerator.writeEnd();
 		}
 	}
 
