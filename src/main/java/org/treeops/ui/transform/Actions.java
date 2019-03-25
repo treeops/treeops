@@ -47,7 +47,7 @@ public class Actions {
 		add(res, "Regular expression", n -> RegExpDialog.showDialog(n, frame));
 		add(res, "Indexing", n -> new IndexingTransformation(n.getPath()));
 		add(res, "Append child name",
-				n -> select(frame, n.listChildPaths(false), "Choose child", "Append child name", input -> new AppendChildTransformation(n.getPath(), org.treeops.utils.Utils.fromPath(input), true)));
+				n -> select(frame, n.listChildPaths(false), "Choose child", "Append child name", input -> new AppendChildTransformation(n.getPath(), Utils.fromPath(input), true)));
 
 		add(res, "Move Up", n -> new MoveUpTransformation(n.getPath()));
 		add(res, "Move Up as Parent", n -> new MoveUpBecomeParentTransformation(n.getPath()));
@@ -58,8 +58,10 @@ public class Actions {
 		add(res, "Insert child ", n -> ask(frame, Utils.last(n.getPath()), "New child name", input -> new InsertChildTransformation(n.getPath(), input)));
 		add(res, "Insert child for all nodes matching Regex", n -> InsertChildForAllNodesMatchingRegexDialog.showDialog(n, frame));
 
-		add(res, "Group", n -> select(frame, n.listChildPaths(false), "Choose child", "Group", input -> new GroupTransformation(n.getPath(), org.treeops.utils.Utils.fromPath(input), "Group")));
+		add(res, "Group", n -> select(frame, n.listChildPaths(false), "Choose child", "Group", input -> new GroupTransformation(n.getPath(), Utils.fromPath(input), "Group")));
 		add(res, "Remove duplicates", n -> new RemoveDuplicatesTransformation(n.getPath()));
+
+		add(res, "Sort", n -> SortDialog.showDialog(n, frame));
 
 		add(res, "Reorder up", n -> new ReorderTransformation(n.getPath(), true));
 		add(res, "Reorder down", n -> new ReorderTransformation(n.getPath(), false));
@@ -75,7 +77,7 @@ public class Actions {
 
 	private static Transformation moveToSibling(SchemaNode n, String input) {
 		List<String> siblingPath = new ArrayList<>(n.getParent().getPath());
-		siblingPath.addAll(org.treeops.utils.Utils.fromPath(input));
+		siblingPath.addAll(Utils.fromPath(input));
 		return new MoveToSiblingTransformation(n.getPath(), siblingPath);
 	}
 

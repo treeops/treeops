@@ -133,6 +133,10 @@ public class Utils {
 		return packageName.replaceAll("\\.", SLASH);
 	}
 
+	public static String path(Iterable<String> list) {
+		return String.join(SLASH, list);
+	}
+
 	public static boolean sameText(String s1, String s2) {
 		if (s1 == null) {
 			return s2 == null;
@@ -153,4 +157,5 @@ public class Utils {
 		}
 		return res;
 	}
+
 }

@@ -19,17 +19,14 @@ public class CompareFeatures implements En {
 		When("two trees are compared", (io.cucumber.datatable.DataTable dataTable) -> dataTable.asMaps().forEach(row -> run(new CompareEntry(row))));
 		Then("the result as described", () -> {
 		});
-
 	}
 
 	private void run(CompareEntry e) {
-
 		LOG.info("case " + e + "...");
 		ComparisonSettings settings = new ComparisonSettings(new ArrayList<>());
 		if (e.ignored != null) {
 			settings.getIgnoredPaths().add(Collections.singletonList(e.ignored));
 		}
-
 		DataNode n1 = node(e.leftValue, e.left);
 		DataNode n2 = node(e.rightValue, e.right);
 
@@ -41,13 +38,11 @@ public class CompareFeatures implements En {
 	}
 
 	private DataNode node(String val, String name) {
-
 		if (val != null) {
 			return DataNode.valueNode(null, name, val);
 		} else {
 			return new DataNode(null, name);
 		}
-
 	}
 
 	static class CompareEntry {

@@ -13,7 +13,7 @@ public class SortTransformationTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SortTransformationTest.class);
 
 	@Test
-	public void testInsert() {
+	public void testSort() {
 		DataNode root = new DataNode("root");
 
 		new DataNode(root, "a");

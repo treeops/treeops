@@ -285,7 +285,11 @@ public class GenericNode<T> {
 	}
 
 	public List<String> listChildPaths(boolean includeThis) {
-		return flatten(includeThis).stream().map(c -> String.join("/", relativePath(c))).collect(Collectors.toList());
+		return flatten(includeThis).stream().map(c -> relativePathText(c)).collect(Collectors.toList());
+	}
+
+	public String relativePathText(GenericNode<T> c) {
+		return String.join("/", relativePath(c));
 	}
 
 	public List<String> relativePath(GenericNode<T> c) {

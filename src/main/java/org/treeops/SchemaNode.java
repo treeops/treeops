@@ -4,8 +4,8 @@ import java.util.List;
 
 public class SchemaNode extends GenericNode<SchemaData> {
 
-	public SchemaNode(GenericNode<SchemaData> parent, String name, SchemaData data) {
-		super(parent, name, data);
+	public SchemaNode(GenericNode<SchemaData> parent, String name) {
+		super(parent, name, new SchemaData());
 	}
 
 	public <T> String getIndexedPathToRoot(GenericNode<T> n) {

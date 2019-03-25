@@ -46,9 +46,8 @@ public class SchemaExtractor {
 	}
 
 	private static SchemaNode newSchemaNode(String name, SchemaNode p) {
-		SchemaData sd = new SchemaData();
-		SchemaNode s = new SchemaNode(p, name, sd);
-		sd.setTotal(1);
+		SchemaNode s = new SchemaNode(p, name);
+		s.getData().setTotal(1);
 		return s;
 	}
 

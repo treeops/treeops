@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.treeops.DataNode;
-import org.treeops.SchemaData;
 import org.treeops.SchemaExtractor;
 import org.treeops.SchemaNode;
 import org.treeops.ui.util.SuppressedWarnings;
@@ -82,7 +81,7 @@ public class TypeExtractorTest {
 	}
 
 	private static AtomicType type(String... vals) {
-		SchemaNode n = new SchemaNode(null, "a", new SchemaData());
+		SchemaNode n = new SchemaNode(null, "a");
 		n.getData().getValues().addAll(Utils.list(vals));
 		return TypeExtractor.getAtomicType(n);
 	}
