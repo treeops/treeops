@@ -29,18 +29,18 @@ public class InputParser {
 		}
 	}
 
-	private static DataNode parseDir(Format format, File file) {
-		LOG.debug("reading dir " + file);
-		List<File> files = Utils.readFiles(file);
+	private static DataNode parseDir(Format format, File dir) {
+		LOG.debug("reading dir " + dir);
+		List<File> files = Utils.readFiles(dir);
 		LOG.debug("found " + files.size());
-		return parseFiles(format, files.stream().filter(f -> f.getName().toUpperCase().endsWith(format.name().toUpperCase())));
+		return parseFiles(format, dir, files.stream().filter(f -> f.getName().toUpperCase().endsWith(format.name().toUpperCase())));
 	}
 
-	public static DataNode parseFiles(Format format, Stream<File> files) {
+	public static DataNode parseFiles(Format format, File dir, Stream<File> files) {
 		DataNode root = new DataNode("Files");
 		files.forEach(file -> {
 			DataNode fileNode = new DataNode(root, "File");
-			DataNode.valueNode(fileNode, "fileName", file.getAbsolutePath());
+			DataNode.valueNode(fileNode, "fileName", file.getAbsolutePath().substring(dir.getAbsolutePath().length()));
 			addFile(fileNode, file, format);
 		});
 		return root;
